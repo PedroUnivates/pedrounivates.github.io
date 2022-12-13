@@ -21,101 +21,34 @@ if ($tipo == 'cliente') {
     $dt = $_POST["dt"];
 
 
-    if (!isset($dt) || $dt == '') {
-        $_SESSION['erro'] = "Informe a Data de nascimento do cliente";
-        header('Location: ../clientes.php');
-        exit();
-    }
-
-    if (isset($id) && $id != '') {
-        $sql = "UPDATE clientes SET dtnasc = ? WHERE id = ?";
-        $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$dt, $id]);
-
-        if ($return) {
-            $_SESSION['sucesso'] = "Cliente alterado com sucesso!";
-            header('Location: ../clientes-lista.php');
-            exit();
-        }
-    } else {
-        $sql = "INSERT INTO clientes (nome) VALUES(?)";
-        $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$dt, $id]);
-
-        if ($return) {
-            $_SESSION['sucesso'] = "Cliente incluído com sucesso!";
-            header('Location: ../clientes-lista.php');
-            exit();
-        }
-    }
-
-    if (!isset($tel) || $tel == '') {
-        $_SESSION['erro'] = "Informe um telefone para o cliente";
-        header('Location: ../clientes.php');
-        exit();
-    }
-
-    if (isset($id) && $id != '') {
-        $sql = "UPDATE clientes SET telefone = ? WHERE id = ?";
-        $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$tel, $id]);
-
-        if ($return) {
-            $_SESSION['sucesso'] = "Cliente alterado com sucesso!";
-            header('Location: ../clientes-lista.php');
-            exit();
-        }
-    } else {
-        $sql = "INSERT INTO clientes (nome) VALUES(?)";
-        $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$tel, $id]);
-
-        if ($return) {
-            $_SESSION['sucesso'] = "Cliente incluído com sucesso!";
-            header('Location: ../clientes-lista.php');
-            exit();
-        }
-    }
-
-    if (!isset($email) || $email == '') {
-        $_SESSION['erro'] = "Informe um email para o cliente";
-        header('Location: ../clientes.php');
-        exit();
-    }
-
-    if (isset($id) && $id != '') {
-        $sql = "UPDATE clientes SET email = ? WHERE id = ?";
-        $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$email, $id]);
-
-        if ($return) {
-            $_SESSION['sucesso'] = "Cliente alterado com sucesso!";
-            header('Location: ../clientes-lista.php');
-            exit();
-        }
-    } else {
-        $sql = "INSERT INTO clientes (nome) VALUES(?)";
-        $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$email]);
-
-        if ($return) {
-            $_SESSION['sucesso'] = "Cliente incluído com sucesso!";
-            header('Location: ../clientes-lista.php');
-            exit();
-        }
-    }
-
-
     if (!isset($nome) || $nome == '') {
         $_SESSION['erro'] = "Informe um nome para o cliente";
         header('Location: ../clientes.php');
         exit();
     }
 
+    if (!isset($email) || $email == '') {
+        $_SESSION['erro'] = "Informe um e-mail para o cliente";
+        header('Location: ../clientes.php');
+        exit();
+    }
+
+    if (!isset($tel) || $tel == '') {
+        $_SESSION['erro'] = "Informe um Telefone para o cliente";
+        header('Location: ../clientes.php');
+        exit();
+    }
+
+    if (!isset($dt) || $dt == '') {
+        $_SESSION['erro'] = "Informe a Data de Nascimento do cliente";
+        header('Location: ../clientes.php');
+        exit();
+    }
+
     if (isset($id) && $id != '') {
-        $sql = "UPDATE clientes SET nome = ? and email = ? WHERE id = ?";
+        $sql = "UPDATE clientes SET nome = ?, email = ?, telefone = ?, dtnasc = ? WHERE id = ?";
         $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$nome, $email, $id]);
+        $return = $stmt->execute([$nome, $email, $tel, $dt, $id]);
 
         if ($return) {
             $_SESSION['sucesso'] = "Cliente alterado com sucesso!";
@@ -123,10 +56,9 @@ if ($tipo == 'cliente') {
             exit();
         }
     } else {
-        $sql = "INSERT INTO clientes (nome) VALUES(?)";
+        $sql = "INSERT INTO clientes (nome, email, telefone, dtnasc) VALUES(?,?)";
         $stmt = $conexao->prepare($sql);
-        $return = $stmt->execute([$nome]);
-        
+        $return = $stmt->execute([$nome, $email, $tel, $dt]);
 
         if ($return) {
             $_SESSION['sucesso'] = "Cliente incluído com sucesso!";
